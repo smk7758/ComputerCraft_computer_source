@@ -3,7 +3,7 @@
 -- Author: smk7758
 --##################
 
-TIME_INTERVAL = 35
+TIME_INTERVAL = 20
 LONG_TO_CHEST = 2
 CHEST_HIGHT = 2
 
@@ -51,7 +51,7 @@ end
 function isItemFull()
  isFULL = {}
  for i=1, 16 do
-  if turtle.getItemSpace(i) == 0 then
+  if turtle.getItemSpace(i) == 1 then
    isFULL[i] = true
   else
    isFULL[i] = false
@@ -59,9 +59,9 @@ function isItemFull()
  end
  if isFULL[1] and isFULL[2] and isFULL[3] and isFULL[4] and isFULL[5] and isFULL[6] and isFULL[7] and isFULL[8] and isFULL[9] and isFULL[10] and isFULL[11] and isFULL[12] and isFULL[13] and isFULL[14] and isFULL[15] and isFULL[16] then
   -- If: All isFULL are full.
-  return 1
+  return true
  else
-  return 0
+  return false
  end
 end
 
@@ -70,7 +70,7 @@ end
 print("If you want to stop this program, press \"Ctrl+T\" for a while time.")
 while true do
  print("Start checking item slots.")
- if isItemFull() == 0 then
+ if isItemFull() then
   print("Slot: Error")
   print("Some item slots are full. Turtle is going to put items in chest.")
   putChest()
@@ -88,6 +88,8 @@ while true do
  print("Start fishing.")
  sleep(TIME_INTERVAL)
  isFISH = turtle.digDown()
- print("Oops! I could't fish anything.")
+  if not isFISH then
+   print("Oops! I could't fish anything.")
+  end
  print("Fish something.")
 end
