@@ -4,7 +4,7 @@
 --##################
 
 TIME_INTERVAL = 35
-LONG_TO_CHEST = 3
+LONG_TO_CHEST = 2
 CHEST_HIGHT = 2
 
 --##################
@@ -15,8 +15,9 @@ CHEST_PLACE = 1
   turtle.forward()
  end
  for i=1, 16 do
-  ITEM_COUNT = turtle.getItemCount(i)
-  isPUT_CHEST = turtle.itemDrop(ITEM_COUNT)
+  turtle.select(i)
+  ITEM_COUNT = turtle.getItemCount()
+  isPUT_CHEST = turtle.drop(ITEM_COUNT)
   if not isPUT_CHEST then
    -- If: Can't put in chest.
    if CHEST_PLACE <= CHEST_HIGHT then
@@ -26,8 +27,10 @@ CHEST_PLACE = 1
     print("Chest: Error")
     print("Can't find a empty chests. Please make empty chest.")
     print("The program will stop after return home.")
+   end
   end
  end
+ turtle.select(1)
  if CHEST_PLACE ~= 1 then
  -- If: CHEST_PLACE is not fist number.
   for i=1, CHEST_PLACE do
@@ -37,8 +40,9 @@ CHEST_PLACE = 1
  for i=1, LONG_TO_CHEST do
   turtle.back()
  end
- if CHEST_PLACE <= CHEST_HIGHT then
-  os.restart()
+ if not isPUT_CHEST and CHEST_PLACE <= CHEST_HIGHT then
+ -- Can't put in chest.
+  os.reboot()
  else
   print("Put all items to chest.")
  end
@@ -63,9 +67,16 @@ end
 
 --##################
 -- Main
-
 print("If you want to stop this program, press \"Ctrl+T\" for a while time.")
 while true do
+ print("Start checking item slots.")
+ if isItemFull() == 0 then
+  print("Slot: Error")
+  print("Some item slots are full. Turtle is going to put items in chest.")
+  putChest()
+ else
+  print("Slot: OK")
+ end
  isDOWN_WATER = turtle.attackDown()
  if not isDOWN_WATER then
   print("There is no water down turtle.")
@@ -77,14 +88,6 @@ while true do
  print("Start fishing.")
  sleep(TIME_INTERVAL)
  isFISH = turtle.digDown()
- -- not use: isFISH
+ print("Oops! I could't fish anything.")
  print("Fish something.")
- print("Start checking item slots.")
- if isItemFull() == 0 then
-  print("Slot: Error")
-  print("The all item slots are full. Turtle is going to put items in chest.")
-  putChest()
- else
-  print("Slot: OK")
- end
 end
