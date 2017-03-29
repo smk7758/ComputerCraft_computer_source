@@ -2,13 +2,72 @@
 -- Fishing program.
 -- Author: smk7758
 --##################
+
 TIME_INTERVAL = 35
+LONG_TO_CHEST = 3
+CHEST_HIGHT = 2
+
 --##################
+
+function putChest()
+CHEST_PLACE = 1
+ for i=1, LONG_TO_CHEST do
+  turtle.forward()
+ end
+ for i=1, 16 do
+  ITEM_COUNT = turtle.getItemCount(i)
+  isPUT_CHEST = turtle.itemDrop(ITEM_COUNT)
+  if not isPUT_CHEST then
+   -- If: Can't put in chest.
+   if CHEST_PLACE <= CHEST_HIGHT then
+    turtle.up()
+    CHEST_PLACE = CHEST_PLACE + 1
+   else
+    print("Chest: Error")
+    print("Can't find a empty chests. Please make empty chest.")
+    print("The program will stop after return home.")
+  end
+ end
+ if CHEST_PLACE ~= 1 then
+ -- If: CHEST_PLACE is not fist number.
+  for i=1, CHEST_PLACE do
+   turtle.down()
+  end
+ end
+ for i=1, LONG_TO_CHEST do
+  turtle.back()
+ end
+ if CHEST_PLACE <= CHEST_HIGHT then
+  os.restart()
+ else
+  print("Put all items to chest.")
+ end
+end
+
+function isItemFull()
+ isFULL = {}
+ for i=1, 16 do
+  if turtle.getItemSpace(i) == 0 then
+   isFULL[i] = true
+  else
+   isFULL[i] = false
+  end
+ end
+ if isFULL[1] and isFULL[2] and isFULL[3] and isFULL[4] and isFULL[5] and isFULL[6] and isFULL[7] and isFULL[8] and isFULL[9] and isFULL[10] and isFULL[11] and isFULL[12] and isFULL[13] and isFULL[14] and isFULL[15] and isFULL[16] then
+  -- If: All isFULL are full.
+  return 1
+ else
+  return 0
+ end
+end
+
+--##################
+-- Main
 
 print("If you want to stop this program, press \"Ctrl+T\" for a while time.")
 while true do
- isDownWater = turtle.attackDown()
- if not isDownWater then
+ isDOWN_WATER = turtle.attackDown()
+ if not isDOWN_WATER then
   print("There is no water down turtle.")
   print("Press any key to stop this program.")
   os.pullEvent("key")
@@ -17,6 +76,15 @@ while true do
  end
  print("Start fishing.")
  sleep(TIME_INTERVAL)
- isFish = turtle.digDown()
+ isFISH = turtle.digDown()
+ -- not use: isFISH
  print("Fish something.")
+ print("Start checking item slots.")
+ if isItemFull() == 0 then
+  print("Slot: Error")
+  print("The all item slots are full. Turtle is going to put items in chest.")
+  putChest()
+ else
+  print("Slot: OK")
+ end
 end
