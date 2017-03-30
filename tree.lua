@@ -3,17 +3,17 @@
 -- Author: smk7758
 --##################
 
-TIME_INTERVAL = 20
-LONG_TO_CHEST = 2
+TIME_INTERVAL = 100
 CHEST_HIGHT = 2
+PLANT = "BambooMod:sakuraSapling"
+TREE = "BambooMod:sakuraLog"
 
 --##################
 
 function putChest()
-CHEST_PLACE = 1
- for i=1, LONG_TO_CHEST do
-  turtle.forward()
- end
+ CHEST_PLACE = 1
+ turtle.turnRight()
+ turtle.turnRight()
  for i=1, 16 do
   turtle.select(i)
   ITEM_COUNT = turtle.getItemCount()
@@ -33,7 +33,7 @@ CHEST_PLACE = 1
  turtle.select(1)
  if CHEST_PLACE ~= 1 then
  -- If: CHEST_PLACE is not fist number.
-  for i=1, CHEST_PLACE - 1 do
+  for i=1, CHEST_PLACE do
    turtle.down()
   end
  end
@@ -46,6 +46,8 @@ CHEST_PLACE = 1
  else
   print("Put all items to chest.")
  end
+ turtle.turnRight()
+ turtle.turnRight()
 end
 
 function isItemFull()
@@ -77,20 +79,17 @@ while true do
  else
   print("Slot: OK")
  end
- isDOWN_WATER = turtle.attackDown()
- if not isDOWN_WATER then
-  print("There is no water down turtle.")
+ isOK, msg = turtle.place(PLANT)
+ if not isOK then
+  print("Msg: " .. msg)
   print("Press any key to stop this program.")
   os.pullEvent("key")
   print("Reboot.")
   os.reboot()
  end
- print("Start fishing.")
  sleep(TIME_INTERVAL)
- isFISH, msg = turtle.digDown()
-  if not isFISH then
-   print("Oops! I could't fish anything.")
-   print("Cause by: " .. msg .. " .")
-  end
- print("Fish something.")
+ local SUCCESS, BLOCK_DATA = turtle.inspect()
+ if BLOCK_DATA.name == TREE then
+  turtle.dig()
+ end
 end
