@@ -41,6 +41,7 @@ PLACE_SIZE = 0
 MOVED_HEIGHT = 0
 MOVED_WIDTH = 0
 PLANT_COUNT = 0
+-- PLANTED_COUNT?
 ITEM_COUNT = 0
 
 function printDebug(MSG)
@@ -250,24 +251,46 @@ end
 function selectItem()
  local ITEM_SLOT = 1
  local isITEM_SELECT_SEARCH_FIRST = true
+ local SLOT_LIMIT = 16
+ if PLANT_MODE == 1 then
+  local PLANT_COUNT_NOW = PLANT_COUNT + 1
+  for i=1, PLANT_COUNT_NOW, i * 4 do
+   if i == PLANT_COUNT_NOW then
+    ITEM_SLOT = 1
+    SLOT_LIMIT = 4
+     break
+   elseif i + 1 == PLANT_COUNT_NOW then
+    ITEM_SLOT = 5
+    SLOT_LIMIT = 8
+    break
+   elseif i +2 == PLANT_COUNT_NOW then
+    ITEM_SLOT = 9
+    SLOT_LIMIT = 12
+    break
+   elseif i +3 == PLANT_COUNT_NOW then
+    ITEM_SLOT = 13
+    SLOT_LIMIT = 16
+    break
+   end
+  end
  while turtle.getItemCount(ITEM_SLOT) == 0 or turtle.getItemCount(ITEM_SLOT) == nil do
  -- when: ITEM_SLOT is empty.
-  if ITEM_SLOT >= 16 then
+  if ITEM_SLOT >= SLOT_LIMIT then
    printDebug("Item slot is last in searching.")
    -- Slot is last or not correct number.
    if isITEM_SELECT_SEARCH_FIRST then
     -- if: Searching is first time.
     printDebug("Item slot is last, and first time searching.")
-    ITEM_SLOT = 1
-    isITEM_SELECT_SEARCH_FIRST = false
-   else
-    -- Searching is not first time.
-    if PLANT_MODE == 1 then
-     
+    if PLANT_MODE ~= 1 then
+     ITEM_SLOT = 1
+     isITEM_SELECT_SEARCH_FIRST = false
     else
+     -- Searching is not first time.
      print("Turtle can't find item.")
+     -- もーどによっては・・・。
+     return false
     end
-    -- もーどによっては・・・。
+   else
     return false
    end
   else
@@ -276,6 +299,7 @@ function selectItem()
    -- Go to next SLOT
   end
  end
+
  local isSELECT_ITEM, ERROR_MSG = turtle.select(ITEM_SLOT)
  if not isSELECT_ITEM then
   printDebug("SelectItem: NG")
