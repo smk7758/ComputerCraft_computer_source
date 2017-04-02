@@ -273,6 +273,7 @@ function selectItem()
     break
    end
   end
+ end
  while turtle.getItemCount(ITEM_SLOT) == 0 or turtle.getItemCount(ITEM_SLOT) == nil do
  -- when: ITEM_SLOT is empty.
   if ITEM_SLOT >= SLOT_LIMIT then
@@ -299,7 +300,6 @@ function selectItem()
    -- Go to next SLOT
   end
  end
-
  local isSELECT_ITEM, ERROR_MSG = turtle.select(ITEM_SLOT)
  if not isSELECT_ITEM then
   printDebug("SelectItem: NG")
