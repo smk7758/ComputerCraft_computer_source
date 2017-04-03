@@ -120,19 +120,17 @@ function checkForJobItem()
    -- Count itemss.
    ITEM_CHECK_COUNT = ITEM_CHECK_COUNT + turtle.getItemCount(i_SLOT_COUNT)
    -- Arrange items.
---   aa = iが16 + i___ で 17!!
    i_SLOT_ARRANGE_LIMIT = 16 - i_SLOT_COUNT
-   if i_SLOT_COUNT ~= 16 then
+   local ITEM_SPACE =  turtle.getItemSpace(i_SLOT_COUNT)
+   local ITEM_DEAIL = turtle.getItemDetail(i_SLOT_COUNT)
+   if i_SLOT_COUNT ~= 16 and ITEM_SPACE ~= 0 and ITEM_DEAIL.name ~= nil then
     for i=1, i_SLOT_ARRANGE_LIMIT do
-      printDebug("i: " .. i)
+     printDebug("i: " .. i)
      if turtle.compareTo(i_SLOT_COUNT + i) then
-      local ITEM_SPACE =  turtle.getItemSpace(i_SLOT_COUNT)
-      if ITEM_SPACE ~= 0 then
        turtle.select(i_SLOT_COUNT + i)
        turtle.transferTo(i_SLOT_COUNT, ITEM_SPACE)
        turtle.select(i_SLOT_COUNT)
        printDebug("Items arranged.")
-      end
      end
     end
    end

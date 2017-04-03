@@ -19,7 +19,13 @@ function getFuel(FUEL_SUPPLY)
  local FUEL_SUPPLY_FOR_GET = FUEL_SUPPLY / 80
  printDebug("FUEL_SUPPLY: " .. FUEL_SUPPLY)
  printDebug("FUEL_SUPPLY(for get): " .. FUEL_SUPPLY_FOR_GET)
- local isGET_FUEL, ERROR_MSG = turtle.suck(FUEL_SUPPLY_FOR_GET)
+
+ turtle.turnLeft()
+ for i=1, LONG_TO_CHEST do
+  turtle.forward()
+ end
+
+ local isGET_FUEL, ERROR_MSG = turtle.suck(FUEL_SUPPLY_FOR_GET
  if isGET_FUEL then
   print("GetFuel: OK")
  else
@@ -27,38 +33,59 @@ function getFuel(FUEL_SUPPLY)
   printDebug("Error message: " .. ERROR_MSG)
   return false
  end
- local isREFUEL, ERROR_MSG = turtle.refuel(FUEL_SUPPLY_FOR_GET)
- if isGET_FUEL then
-  print("Refuel: OK")
-  return true
- else
+ local isREFUEL, ERROR_MSG = turtle.refuel(FUEL_SUPPLY_FOR_GET
+ if not isREFUEL then
   print("Refuel: NG")
   printDebug("Error message: " .. ERROR_MSG)
   return false
+ else
+    print("Refuel: OK")
  end
+ 
+ for i=1, LONG_TO_CHEST do
+  turtle.forward()
+ end
+ turtle.turnRight()
 end
 
-
-checkFuel will stop after return home.")
+function putChest()
+ for i=1, LONG_TO_CHEST do
+  turtle.forward()
+ end
+ -- for文用、その時点でのチェストの高さ。
+ local CHEST_PLACE = 1
+ for i=1, 16 do
+  turtle.select(i)
+  ITEM_COUNT = turtle.getItemCount()
+  isPUT_CHEST = turtle.drop(ITEM_COUNT)
+  if not isPUT_CHEST then
+   -- If: Can't put in chest.
+   if CHEST_PLACE <= CHEST_HIGHT then
+    turtle.up()
+    CHEST_PLACE = CHEST_PLACE + 1
+   else
+    print("Chest: Error")
+    print("Can't find a empty chests. Please make empty chest.")
+    print("The program will stop after return home.")
+   end
   end
-  end
-end
-turtle.select(1)
-if CHEST_PLACE ~= 1 then
--- If: CHEST_PLACE is not fist number.
+ end
+ turtle.select(1)
+ if CHEST_PLACE ~= 1 then
+ -- If: CHEST_PLACE is not fist number.
   for i=1, CHEST_PLACE - 1 do
-  turtle.down()
+   turtle.down()
   end
-end
-for i=1, LONG_TO_CHEST do
+ end
+ for i=1, LONG_TO_CHEST do
   turtle.back()
-end
-if not isPUT_CHEST and CHEST_PLACE <= CHEST_HIGHT then
--- Can't put in chest.
+ end
+ if not isPUT_CHEST and CHEST_PLACE <= CHEST_HIGHT then
+ -- Can't put in chest.
   os.reboot()
-else
+ else
   print("Put all items to chest.")
-end
+ end
 end
 
 function checkFuel()
