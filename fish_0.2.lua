@@ -35,6 +35,14 @@ function getFuel(FUEL_SUPPLY)
  else
     print("Refuel: OK")
  end
+ local isREFUEL, ERROR_MSG = turtle.refuel(FUEL_SUPPLY_FOR_GET)
+ if not isREFUEL then
+  print("Refuel: NG")
+  printDebug("Error message: " .. ERROR_MSG)
+  return false
+ else
+    print("Refuel: OK")
+ end
 end
 
 function putChest()
