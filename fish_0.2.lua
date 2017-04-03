@@ -25,7 +25,7 @@ function getFuel(FUEL_SUPPLY)
   turtle.forward()
  end
 
- local isGET_FUEL, ERROR_MSG = turtle.suck(FUEL_SUPPLY_FOR_GET
+ local isGET_FUEL, ERROR_MSG = turtle.suck(FUEL_SUPPLY_FOR_GET)
  if isGET_FUEL then
   print("GetFuel: OK")
  else
@@ -33,7 +33,7 @@ function getFuel(FUEL_SUPPLY)
   printDebug("Error message: " .. ERROR_MSG)
   return false
  end
- local isREFUEL, ERROR_MSG = turtle.refuel(FUEL_SUPPLY_FOR_GET
+ local isREFUEL, ERROR_MSG = turtle.refuel(FUEL_SUPPLY_FOR_GET)
  if not isREFUEL then
   print("Refuel: NG")
   printDebug("Error message: " .. ERROR_MSG)
