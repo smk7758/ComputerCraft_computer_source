@@ -19,12 +19,6 @@ function getFuel(FUEL_SUPPLY)
  local FUEL_SUPPLY_FOR_GET = FUEL_SUPPLY / 80
  printDebug("FUEL_SUPPLY: " .. FUEL_SUPPLY)
  printDebug("FUEL_SUPPLY(for get): " .. FUEL_SUPPLY_FOR_GET)
-
- turtle.turnLeft()
- for i=1, LONG_TO_CHEST do
-  turtle.forward()
- end
-
  local isGET_FUEL, ERROR_MSG = turtle.suck(FUEL_SUPPLY_FOR_GET)
  if isGET_FUEL then
   print("GetFuel: OK")
@@ -41,11 +35,6 @@ function getFuel(FUEL_SUPPLY)
  else
     print("Refuel: OK")
  end
- 
- for i=1, LONG_TO_CHEST do
-  turtle.forward()
- end
- turtle.turnRight()
 end
 
 function putChest()
@@ -91,13 +80,13 @@ end
 function checkFuel()
  if turtle.getFuelLevel() > LONG_TO_CHEST + 2 then
   print("Fuel: OK")
-  return true, 0
+  return true
  end
  -- if: fuel is not ok.
  local FUEL_SUPPLY = 64 * 80
  print("Fuel: NG")
  print("Not enough fuel. Please supply fuel: " .. FUEL_SUPPLY .. "\(in coal: " .. FUEL_SUPPLY / 80 .. "\)")
- return false, FUEL_SUPPLY
+ return false
 end
 
 function isItemFull()
@@ -127,8 +116,8 @@ while true do
   for i=1, LONG_TO_CHEST do
    turtle.forward()
   end
-  getFuel()
-  for i=1,  LONG_TO_CHEST
+  getFuel(64 * 80)
+  for i=1,  LONG_TO_CHEST do
    turtle.back()
   end
   turtle.turnRight()
